@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section></section>
+    <section class="space">
+        <h1>Cyberspace</h1>
+        <img src="images/space1.jpg" data-speed="-6" alt="Space">
+        <img src="images/space1.jpg" data-speed="-4" alt="Space">
+        <img src="images/space1.jpg" data-speed="-3" alt="Space">
+        <img src="images/space1.jpg" data-speed="-8" alt="Space">
+    </section>
+    <section></section>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script> 
+    <script src="https://unpkg.com/split-type"></script>
+    
+    <script>
+
+
+        // heading animation
+        
+        const heading = document.querySelector('h1')
+        const headingSplit = new SplitType(heading)
+        const imgs = gsap.utils.toArray('img')
+
+        const letters = heading.querySelectorAll('.char')
+
+        function getRandom(min, max){
+            return Math.random() * (max - min) + min;
+        }
+
+        letters.forEach((letter, index) => {
+            const randomYpercent = getRandom(70, 1100)
+
+            gsap.fromTo(letter, {
+                yPercent: -randomYpercent,
+                opacity: 0
+            }, {
+                yPercent: 0,
+                opacity: 1,
+                scrollTrigger: {
+                    trigger: heading,
+                    start: "top bottom",
+                    end: "bottom center",
+                    scrub: true
+                }
+            })
+        })
+
+        // image parallax
+
+        imgs.forEach(img => {
+            const speed = img.dataset.speed;
+
+            gsap.to(img, {
+                yPercent: speed * 50,
+                ease: none,
+                scrollTrigger: {
+                    trigger: img,
+                    start: 'top bottom',
+                    scrub: true,
+                }
+            })
+        })
+
+        // smooth scroll
+        const lenis = new Lenis()
+        function raf(time){
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+        
+        requestAnimationFrame(raf)
+    </script>
+</body>
+</html>
